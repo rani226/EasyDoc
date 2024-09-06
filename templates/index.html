@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Document Sharing</title>
+    <style>
+        body {
+            background-image: url(https://i.pinimg.com/originals/55/01/60/5501609ee45d514d1f2c4a63502045e2.gif);
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container-fluid {
+            background-color: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid text-center">
+        <h1 ">Welcome to the <strong><span style="color:#003366;font-style:italic;">E</span></style></strong><span style="font-style:italic;">asyDoc</span></h1>
+        <p><strong>Securely share your documents using our QR code.</strong></p>
+        <div class="input-group">
+            <input type="file" class="form-control" id="fileInput">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="generateButton">Generate QR Code</button>
+            </span>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('generateButton').addEventListener('click', function () {
+            var fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length > 0) {
+                var formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+
+                fetch('{{ url_for("upload_file") }}', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.text())
+                    .then(data => {
+                        document.body.innerHTML = data;
+                    });
+            } else {
+                alert("Please select a file to upload.");
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
